@@ -30,9 +30,9 @@ public class ReservationResource {
     this.reservationService = reservationService;
   }
 
-  @GetMapping(path = "{roomId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<Reservation> getReservationById(@PathVariable String roomId) {
-    return reservationService.getReservation(roomId);
+  @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Mono<Reservation> getReservationById(@PathVariable String id) {
+    return reservationService.getReservation(id);
   }
 
   @PostMapping(path = "",
@@ -42,16 +42,16 @@ public class ReservationResource {
     return reservationService.createReservation(reservationMono);
   }
 
-  @PutMapping(path = "{roomId}",
+  @PutMapping(path = "{id}",
       produces = MediaType.APPLICATION_JSON_VALUE,
       consumes = MediaType.APPLICATION_JSON_VALUE)
   public Mono<Reservation> updatePrice(@RequestBody Mono<Reservation> reservation,
-      @PathVariable Long roomId) {
-    return reservationService.updateReservation(roomId, reservation);
+      @PathVariable Long id) {
+    return reservationService.updateReservation(id, reservation);
   }
 
-  @DeleteMapping(path = "{roomId}")
-  public Mono<Boolean> deleteReservation(@PathVariable String roomId) {
-    return Mono.just(true);
+  @DeleteMapping(path = "{id}")
+  public Mono<Boolean> deleteReservation(@PathVariable Long id) {
+    return reservationService.deleteReservation(id);
   }
 }
