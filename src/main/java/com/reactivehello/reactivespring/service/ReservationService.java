@@ -1,6 +1,7 @@
 package com.reactivehello.reactivespring.service;
 
 import com.reactivehello.reactivespring.model.Reservation;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ReservationService {
@@ -13,4 +14,5 @@ public interface ReservationService {
 
   Mono<Boolean> deleteReservation(Long id);
 
+  Flux<Reservation> listAllReservations();
 }

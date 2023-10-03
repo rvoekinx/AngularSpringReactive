@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ReservationService} from "./reservation.service";
+import {Reservation, ReservationRequest, ReservationService} from "./reservation.service";
 import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
@@ -15,6 +15,7 @@ export class AppComponent {
   currentCheckoutVal: string = '';
   currentPrice: number = 0;
   currentRoomNumber: number = 0;
+  currentReservations: Reservation[] = []
 
   constructor(private reservationService: ReservationService) {
     this.rooms = [
@@ -38,6 +39,25 @@ export class AppComponent {
         this.currentRoomNumber = Number(roomValues[0]);
         this.currentPrice = Number(roomValues[1]);
       }
+    })
+
+    this.getCurrentReservations();
+  }
+
+  createReservation() {
+    this.reservationService.createReservation(
+      new ReservationRequest(
+        this.currentRoomNumber,
+        this.currentCheckInVal,
+        this.currentCheckoutVal,
+        this.currentPrice)
+    ).subscribe(postResult => console.log(postResult));
+  }
+
+  getCurrentReservations() {
+    this.reservationService.getReservations().subscribe(getResult => {
+      console.log(getResult);
+      this.currentReservations = getResult;
     })
   }
 

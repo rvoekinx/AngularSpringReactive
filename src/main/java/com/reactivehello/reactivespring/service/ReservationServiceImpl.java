@@ -2,17 +2,22 @@ package com.reactivehello.reactivespring.service;
 
 import com.mongodb.client.result.DeleteResult;
 import com.reactivehello.reactivespring.model.Reservation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 public class ReservationServiceImpl implements
     ReservationService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
   private final ReactiveMongoOperations reactiveMongoOperations;
 
@@ -49,5 +54,10 @@ public class ReservationServiceImpl implements
         Query.query(Criteria.where("id").is(id)),
         Reservation.class
     ).map(DeleteResult::wasAcknowledged);
+  }
+
+  @Override
+  public Flux<Reservation> listAllReservations() {
+    return reactiveMongoOperations.findAll(Reservation.class);
   }
 }
